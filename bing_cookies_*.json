@@ -1,0 +1,13 @@
+{
+  "conversationId": "51D|BingProd|44ABE2442E92F7C1A4B271B2957EFD20E5AEE327386BD353015459E24DF760BD",
+  "chatName": "hello",
+  "conversationSignature": "fKlTLvy6L8phFdR1s+tpeaziUp5C6f3iAu2dkyPBNRU=",
+  "tone": "Precise",
+  "createTimeUtc": "1700675691144",
+  "updateTimeUtc": "1700675699150",
+  "plugins": [
+    {
+      "id": "c310c353-b9f0-4d76-ab0d-1dd5e979cf68"
+    }
+  ]
+}
