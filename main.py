@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 import openai
-import bingai
-from bingai import BingAI
 import os
 
 # Set your OpenAI API key
@@ -19,6 +17,7 @@ async def on_ready():
     synced = len(await bot.tree.sync())
     print(f'We have logged in as {bot.user}, synced {synced} commands')
     await bot.load_extension("chatgpt")
+
 
 bot.remove_command("help")
 

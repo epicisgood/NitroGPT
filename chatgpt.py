@@ -20,7 +20,7 @@ class ChatGpt(commands.Cog):
             channel = str(message.channel.name)
 
         try:
-            if channel == "chatgpt" or isinstance(message.channel, discord.DMChannel):
+            if channel == "nitrogpt" or isinstance(message.channel, discord.DMChannel):
                 async with message.channel.typing():  # Simulate typing status
                     response = await self.gptchat(user_message)
                     await asyncio.sleep(0.5)  # Simulate some additional processing time
@@ -40,7 +40,7 @@ class ChatGpt(commands.Cog):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "system", "content": "You are a helpful assistant called NitroGPT"},
                 {"role": "user", "content": prompt},
             ],
             temperature=1,
@@ -53,7 +53,7 @@ class ChatGpt(commands.Cog):
 
     async def get_user_input(self):
         try:
-            return await asyncio.to_thread(input, "Reply to him?: git")  # Use an asynchronous input function if available
+            return await asyncio.to_thread(input, "Reply to him?: ")  # Use an asynchronous input function if available
         except asyncio.CancelledError:
             pass
 
