@@ -24,7 +24,13 @@ class ChatGpt(commands.Cog):
                 async with message.channel.typing():  # Simulate typing status
                     response = await self.gptchat(user_message)
                     await asyncio.sleep(0.5)  # Simulate some additional processing time
-                    await message.reply(response)
+                    if len(response) < 1999:
+                      await message.channel.send(response)
+                    elif len(response) < 3999:
+                      await message.channel.send(response[:1999])
+                      await message.channel.send(response[1999:])
+                    
+
 
                     try:
                         my_message = await asyncio.wait_for(self.get_user_input(), timeout=2.5)
@@ -36,20 +42,24 @@ class ChatGpt(commands.Cog):
             await message.reply(str(e))
 
     async def gptchat(self, user_message):
+      try:
+        GPTcontext = str(open("GPTcontext.json", "+r").read())
         prompt = user_message
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant called NitroGPT"},
+                {"role": "system", "content": GPTcontext},
                 {"role": "user", "content": prompt},
             ],
             temperature=1,
-            max_tokens=300,
+            max_tokens=400,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0
         )
         return response['choices'][0]['message']['content'].strip()
+      except Exception as e:
+        return str(e)
 
     async def get_user_input(self):
         try:
