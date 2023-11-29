@@ -1,6 +1,7 @@
 #! /bin/bash
-git clone
-https://github.com/epicisgood/nitrogpt
+pip install openai
+pip install discord.py
+git clone https://github.com/epicisgood/nitrogpt
 cd nitrogpt
 git fetch
 git pull
