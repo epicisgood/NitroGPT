@@ -4,12 +4,13 @@ import openai
 import os
 
 # Set your OpenAI API key
-openai.api_key = os.getenv("OPENAI")
+openai.api_key = os.environ["OPENAI"]
 DISCORD_TOKEN = os.environ['DISCORD']
 
 # Initialize the Discord bot
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=intents)
+bot = commands.Bot(command_prefix='jdsfklskdaf', intents=intents)
+
 
 
 @bot.event
