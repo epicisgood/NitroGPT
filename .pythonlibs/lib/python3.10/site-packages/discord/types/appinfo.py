@@ -1,7 +1,8 @@
 """
 The MIT License (MIT)
 
-Copyright (c) 2015-present Rapptz
+Copyright (c) 2015-2021 Rapptz
+Copyright (c) 2021-present Pycord Development
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -24,58 +25,37 @@ DEALINGS IN THE SOFTWARE.
 
 from __future__ import annotations
 
-from typing import TypedDict, List, Optional
-from typing_extensions import NotRequired
-
-from .user import User
-from .team import Team
+from .._typed_dict import NotRequired, TypedDict
 from .snowflake import Snowflake
-
-
-class InstallParams(TypedDict):
-    scopes: List[str]
-    permissions: str
+from .team import Team
+from .user import User
 
 
 class BaseAppInfo(TypedDict):
     id: Snowflake
     name: str
     verify_key: str
-    icon: Optional[str]
+    icon: str | None
     summary: str
     description: str
-    flags: int
-    cover_image: NotRequired[str]
     terms_of_service_url: NotRequired[str]
     privacy_policy_url: NotRequired[str]
-    rpc_origins: NotRequired[List[str]]
+    hook: NotRequired[bool]
+    max_participants: NotRequired[int]
 
 
 class AppInfo(BaseAppInfo):
-    owner: User
-    bot_public: bool
-    bot_require_code_grant: bool
     team: NotRequired[Team]
     guild_id: NotRequired[Snowflake]
     primary_sku_id: NotRequired[Snowflake]
     slug: NotRequired[str]
-    hook: NotRequired[bool]
-    max_participants: NotRequired[int]
-    tags: NotRequired[List[str]]
-    install_params: NotRequired[InstallParams]
-    custom_install_url: NotRequired[str]
-    role_connections_verification_url: NotRequired[str]
+    rpc_origins: list[str]
+    owner: User
+    bot_public: bool
+    bot_require_code_grant: bool
 
 
-class PartialAppInfo(BaseAppInfo, total=False):
-    hook: bool
-    max_participants: int
-    approximate_guild_count: int
-    redirect_uris: List[str]
-    interactions_endpoint_url: Optional[str]
-    role_connections_verification_url: Optional[str]
-
-
-class GatewayAppInfo(TypedDict):
-    id: Snowflake
-    flags: int
+class PartialAppInfo(BaseAppInfo):
+    rpc_origins: NotRequired[list[str]]
+    cover_image: NotRequired[str]
+    flags: NotRequired[int]

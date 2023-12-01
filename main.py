@@ -1,23 +1,23 @@
 import discord
-from discord.ext import commands
+from discord.ext import bridge
 import openai
+from colorama import Fore
 import os
 
-# Set your OpenAI API key
 openai.api_key = os.environ["OPENAI"]
 DISCORD_TOKEN = os.environ['DISCORD']
 
-# Initialize the Discord bot
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='jdsfklskdaf', intents=intents)
+bot = bridge.Bot(command_prefix='a?', intents=intents)
 
 
 
 @bot.event
 async def on_ready():
-    synced = len(await bot.tree.sync())
-    print(f'We have logged in as {bot.user}, synced {synced} commands')
-    await bot.load_extension("chatgpt")
+    print(f'{Fore.LIGHTBLUE_EX}We have logged in as {Fore.LIGHTMAGENTA_EX}{bot.user} \n')
+    
+bot.load_extensions("chatgpt", "google_search")
+
 
 
 bot.remove_command("help")
@@ -25,8 +25,4 @@ bot.remove_command("help")
 
 
 
-    
-
-
-# Run the Discord bot
 bot.run(DISCORD_TOKEN)
