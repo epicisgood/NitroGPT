@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands, bridge
+from googleapiclient.discovery import build
 
 
 class Google_Search(commands.Cog):
@@ -7,9 +8,11 @@ class Google_Search(commands.Cog):
     self.bot = bot
   @bridge.bridge_command(name='google_search',with_app_command=True, aliases=['google', 'search'])
   async def google_search(self, ctx, *, search_inp: str):
-    test = await ctx.reply(search_inp)
-    ori_ctx = await test.original_response()
-    await ori_ctx.add_reaction("🥣")
+    google_sevice = build(
+        "customsearch", "v1", developerKey=""
+    )
+    
+    
    
 
 
