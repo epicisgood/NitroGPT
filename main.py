@@ -7,6 +7,9 @@ import os
 openai.api_key = os.environ["OPENAI"]
 DISCORD_TOKEN = os.environ['DISCORD']
 GOOGLE_API = os.environ['GOOGLE_API']
+GOOGLE_SEARCH = os.environ['GOOGLE_SEARCH']
+IMAGE_SEARCH = os.environ['IMAGE_SEARCH']
+
 
 intents = discord.Intents.all()
 bot = bridge.Bot(command_prefix='a?', intents=intents)
