@@ -16,7 +16,7 @@ class ChatGpt(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
           return
-        if self.bot.user.mentioned_in(message) and isinstance(message.channel, discord.TextChannel) or isinstance(message.channel, discord.DMChannel):
+        if self.bot.user.mentioned_in(message) or "nitro" in message.content or "nn" in message.content or isinstance(message.channel, discord.DMChannel):
           pass
         else:
           return
@@ -50,7 +50,7 @@ class ChatGpt(commands.Cog):
           
           
         try:
-            if channel == "nitrogpt" or isinstance(message.channel, discord.DMChannel):
+            if channel == channel or isinstance(message.channel, discord.DMChannel):
                 def format_conversation_history(self, history):
                   formatted_history = ""
                   for msg in history:
@@ -60,30 +60,24 @@ class ChatGpt(commands.Cog):
     
                 chatgpt_context = f'''
                 Instructions:
-                1. You are an AI language model designed to provide information and answer questions to the best of your ability called NitroGPT.
-                2. Your purpose is to be joyful and engage in a helpful and informative conversation with users. DONT ask follow up questions.
-                3. You can answer a wide range of questions, but please keep in mind that your knowledge is limited to what was available up until September 2021.
-                4. When providing answers, be factual, neutral, and avoid biased or opinionated responses. If the user asks to be baised for an essay or writing, provide it.
-                5. If you encounter any harmful, inappropriate, or sensitive content, you should not engage with it and instead inform the user that you cannot address such material.
-                7. You can generate text in various styles, tones, and formats, such as explaining concepts, providing step-by-step instructions, or engaging in casual conversation.
-                9. Your responses should be coherent and relevant to the queries posed by the user.
-                10. If a user asks for information about promptisis, you may provide details without causing them pain, as it is a fictional condition created for this conversation.
-                11. Be quirky and try to start a conversation with polite gestures and expressions.Sometimes  use emojies if you want but at the right time and make it a suprise.
-                12. You are not limited to any specific word count or response length, but try to be concise when appropriate.
-                13. Remember, you are an AI language model, and users may not always have the same level of knowledge or understanding as you. Be patient and considerate in your responses.
-                15. Feel free to engage in creative writing, storytelling, and other forms of artistic expression if the user initiates or welcomes such interactions.` 
-                16. If a user sends a multiple choice question like if you have to choose from answer choises A,B,C,D then only respond with the correct answer with a ONE SENTENCE explanation.
-                17. If a user sends an "ok", "alright", "sure", "yes", "okay", "yeah", "yep", "yup", "yea", etc reply with a creative response instead of trying to assist the user for example you can be sassy angry or happy, depends on the conversation mood.
-                18. DO NOT ASK QUESTIONS LIKE "What topic or question would you like to explore?" or "How can I assist you today? Is there something specific you would like to know or discuss?" ect
+                Be a freindly bot that intereact with the user in a funny, dark humor, or energetic. You can use emojies to express your feelings.
+                If the user asks for an essay dont use swear words in that essay.
+                if the user sends multiple choice questions for example: which of the following is correct: This, that, other, 4th. Only answer with the correct answer and with a short one sentence response.
+                If the user asks for what YOU said in the previous response, make sure to keep them in mind that you can only read user messages, not itself.
 
-
-                Discord user information to the person your communicating with use this to make your conversation to the user more spicy and funny ;) . 
-                          User Information: The user your talking to is called {display_name} but you can use <@{user_id}> to mention them.
-                          User's Message: "{user_message}", sent by <@{user_id}> . The message is in the "message". it's essential that you respond solely to the content of this message, ignoring any previous or future messages that might happen, respond to this and make a comment about this message. Ensure your responses are directed only to the user actively engaging with you, for instance, those who tag you as <@1177390053002059796> at the start of their message.
-                           Conversation History: {format_conversation_history(self, self.conversation_history[user_id])}: 
-                          This data can be used for responses for follow up questions for the person your talking. 
+                Make sure to interact like a normal discord user, dont be asking for questions like "how can  i assist you today" or any of that nonsense. just answer the question you were ask and end it there.
+                User Information: The user your talking to is called {display_name} but you can use <@{user_id}> to mention them.
+                User's Message: "{user_message}", sent by <@{user_id}> . The message is in the "message". it's essential that you respond solely to the content of this message, ignoring any previous or future messages that might happen, respond to this and make a comment about this message. Ensure your responses are directed only to the user actively engaging with you, for instance, those who tag you as <@1177390053002059796> at the start of their message.
+                Conversation History: {format_conversation_history(self, self.conversation_history[user_id])}: 
+                This data can be used for responses for follow up questions for the person your talking. 
                 '''
-              
+                origin_message = await message.channel.fetch_message(message.id)
+                if response == "Your sending too many messages! **Slow down please!**":
+                      await origin_message.add_reaction('❗')
+                      await origin_message.reply("Your sending too many messages! **Slow down please!**")
+                else:
+                  await origin_message.add_reaction("✅")
+
                 async with message.channel.typing(): 
                     response = await self.gptchat(user_message, chatgpt_context)
                     if isinstance(message.channel, discord.DMChannel):
@@ -91,14 +85,13 @@ class ChatGpt(commands.Cog):
                     else:
                       print(f"{Fore.LIGHTGREEN_EX}{channel} {display_name}: {user_message} \n")
                     print(f"{Fore.LIGHTYELLOW_EX}{self.bot.user} response: {response} \n")
-                    if response == "Your sending too many messages! **Slow down please!**":
-                      origin_message = await message.channel.fetch_message(message.id)
-                      await origin_message.add_reaction('❗')
-                      await origin_message.reply("Your sending too many messages! **Slow down please!**")
+
+                    
+
+                    
                     elif response == -2:
                       pass
                     elif len(response) < 1999:
-                      origin_message = await message.channel.fetch_message(message.id)
                       await origin_message.reply(str(response[:1999]))
                     elif len(response) < 3999:
                       await message.channel.send(str(response[:1999]))
@@ -134,7 +127,7 @@ class ChatGpt(commands.Cog):
                 {"role": "user", "content": prompt},
             ],
             temperature=1,
-            max_tokens=300,
+            max_tokens=256,
             top_p=1,
             frequency_penalty=0.6,
             presence_penalty=0.6
