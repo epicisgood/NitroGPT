@@ -89,7 +89,7 @@ class ChatGpt(commands.Cog):
                     
 
                     
-                    elif response == -2:
+                    if response == -2:
                       pass
                     elif len(response) < 1999:
                       await origin_message.reply(str(response[:1999]))
