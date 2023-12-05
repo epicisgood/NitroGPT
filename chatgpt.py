@@ -72,37 +72,39 @@ class ChatGpt(commands.Cog):
                 This data can be used for responses for follow up questions for the person your talking. 
                 '''
                 origin_message = await message.channel.fetch_message(message.id)
-                if response == "Your sending too many messages! **Slow down please!**":
-                      await origin_message.add_reaction('❗')
-                      await origin_message.reply("Your sending too many messages! **Slow down please!**")
-                else:
-                  await origin_message.add_reaction("✅")
+                await origin_message.add_reaction("✅")
+                async with message.channel.typing():
+                  response = await self.gptchat(user_message, chatgpt_context)
+                  
+                  if response == "Your sending too many messages! **Slow down please!**":
+                          await origin_message.remove_reaction("✅", self.bot.user)
+                          await origin_message.add_reaction('❌')
+                          await origin_message.reply("Your sending too many messages! **Slow down please!**")
+                  
 
-                async with message.channel.typing(): 
-                    response = await self.gptchat(user_message, chatgpt_context)
-                    if isinstance(message.channel, discord.DMChannel):
-                      print(f"{Fore.LIGHTGREEN_EX}In DMs, {display_name}: {user_message} \n")
-                    else:
-                      print(f"{Fore.LIGHTGREEN_EX}{channel} {display_name}: {user_message} \n")
-                    print(f"{Fore.LIGHTYELLOW_EX}{self.bot.user} response: {response} \n")
-
+                  
+                  if isinstance(message.channel, discord.DMChannel):
+                    print(f"{Fore.LIGHTGREEN_EX}In DMs, {display_name}: {user_message} \n")
+                  else:
+                    print(f"{Fore.LIGHTGREEN_EX}{channel} {display_name}: {user_message} \n")
+                  print(f"{Fore.LIGHTYELLOW_EX}{self.bot.user} response: {response} \n")
                     
 
                     
-                    if response == -2:
+                  if response == -2:
                       pass
-                    elif len(response) < 1999:
-                      await origin_message.reply(str(response[:1999]))
-                    elif len(response) < 3999:
-                      await message.channel.send(str(response[:1999]))
-                      await message.channel.send(str(response[1999:]))
+                  elif len(response) < 1999:
+                    await origin_message.reply(str(response[:1999]))
+                  elif len(response) < 3999:
+                    await message.channel.send(str(response[:1999]))
+                    await message.channel.send(str(response[1999:]))
 
         except discord.errors.GatewayNotFound:
           
           try:
               origin_message = await message.channel.fetch_message(message.id)
               await origin_message.reply(":warning: Please wait a few seconds an **error** has occured! :warning:")
-              await origin_message.add_reaction('❗')
+              await origin_message.add_reaction('⚠️')
               
           except discord.errors.Forbidden:
               message.reply("Bot doesn't have permission to add reactions.")
