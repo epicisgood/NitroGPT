@@ -16,7 +16,8 @@ class ChatGpt(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
           return
-        if self.bot.user.mentioned_in(message) or "nitro" in message.content or "nn" in message.content or isinstance(message.channel, discord.DMChannel):
+        
+        if self.bot.user.mentioned_in(message) or "bb" in message.content[0:5].lower() or "nitro" in message.content.lower() or isinstance(message.channel, discord.DMChannel):
           pass
         else:
           return
@@ -34,13 +35,12 @@ class ChatGpt(commands.Cog):
             "content": message.content
         })
 
-        self.conversation_history[user_id] = self.conversation_history[user_id][-5:]
+        self.conversation_history[user_id] = self.conversation_history[user_id]
 
         if isinstance(message.channel, discord.DMChannel):
           channel = message.channel  # Use the DMChannel directly
           
-          
-          
+        
           
         else:
           channel = message.channel.name  # Use the channel directly
@@ -48,9 +48,8 @@ class ChatGpt(commands.Cog):
 
         
           
-          
         try:
-            if channel == channel or isinstance(message.channel, discord.DMChannel):
+            if channel == "ai-chat" or isinstance(message.channel, discord.DMChannel):
                 def format_conversation_history(self, history):
                   formatted_history = ""
                   for msg in history:
@@ -63,7 +62,6 @@ class ChatGpt(commands.Cog):
                 Be a freindly bot that intereact with the user in a funny, dark humor, or energetic. You can use emojies to express your feelings.
                 If the user asks for an essay dont use swear words in that essay.
                 if the user sends multiple choice questions for example: which of the following is correct: This, that, other, 4th. Only answer with the correct answer and with a short one sentence response.
-                If the user asks for what YOU said in the previous response, make sure to keep them in mind that you can only read user messages, not itself.
 
                 Make sure to interact like a normal discord user, dont be asking for questions like "how can  i assist you today" or any of that nonsense. just answer the question you were ask and end it there.
                 User Information: The user your talking to is called {display_name} but you can use <@{user_id}> to mention them.
